@@ -1,38 +1,190 @@
 :root {
-    --primary-color: rgb(68, 124, 255);
-    --text-color: #f1f1f1;
-    --light-text: #dbdbdbe8;
-    --background: #191a1f;
+  --primary-color: rgba(68, 124, 255, 0.3);
+  --text-color: #f1f1f1;
+  --light-text: #dbdbdbc5;
+  --background: #191a1f;
+  --bg-secondary: #262626;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
 }
 
 body {
-    background-color: var(--background);
+  background-image: url("./assets/background.jpeg");
+  color: var(--text-color);
+  font-family:
+    "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
 }
 
 .header {
-    background: var(--primary-color);
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    flex-direction: column;
-    padding: 20px;
-    gap: 5px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+  padding: 20px;
+  gap: 5px;
 }
 
 .header h1 {
-    color: var(--text-color);
-    font-size: 2.5rem;
+  color: var(--text-color);
+  font-size: 2.5rem;
 }
 
 .header h4 {
-    color: var(--light-text);
-    font-size: 1.3rem;
+  color: var(--light-text);
+  font-size: 1.3rem;
+}
+
+.board {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  gap: 20px;
+  padding: 20px;
+}
+
+.kanban {
+  display: flex;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.kanban-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow-y: auto;
+  padding: 15px;
+  padding-top: 5px;
+}
+
+.task {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 9999;
+  min-height: 50%;
+  min-width: 50%;
+  max-height: 100vh;
+  max-width: 90vw;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: transparent;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: inherit;
+}
+
+.modal-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal h3 {
+  font-size: 2rem;
+  font: bold;
+}
+
+.button {
+  width: max-content;
+  height: max-content;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  gap: 10px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.modal-content {
+  overflow-y: auto;
+  padding: 20px;
+  padding-top: 0;
+}
+
+input, textarea {
+  padding: 10px;
+  font-size: 14px;
+  font: bold;
+  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.05);
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid #00aff0;
 }
