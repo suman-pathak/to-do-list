@@ -3,54 +3,91 @@ import Modal from "./ui/Modal";
 
 function Board() {
   const boards = [
-    { id: 1, title: "To Do" },
-    { id: 2, title: "In Progress" },
-    { id: 3, title: "Completed" },
+    { id: 1, title: "To Do", status: "to-do" },
+    { id: 2, title: "In Progress", status: "in-progress" },
+    { id: 3, title: "Completed", status: "completed" },
   ];
 
-  const tasks = [
-    { id: 1, titile: "Task 1", description: "test task", status: "to-do" },
-    { id: 2, titile: "Task 2", description: "test task", status: "to-do" },
-    { id: 3, titile: "Task 3", description: "test task", status: "to-do" },
-  ];
+  const [tasks, setTasks] = useState([
+    {
+      id: 1,
+      title: "Task 1",
+      description: "test task",
+      status: "to-do",
+    },
+    {
+      id: 2,
+      title: "Task 2",
+      description: "test task",
+      status: "to-do",
+    },
+    {
+      id: 3,
+      title: "Task 3",
+      description: "test task",
+      status: "to-do",
+    },
+  ]);
 
-  const handleSubmit = () => {
-    return null;
+  const [isOpen, setIsOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    const newTask = {
+      id: Date.now(),
+      title: formData.get("title"),
+      description: formData.get("description"),
+      status: formData.get("status"),
+    };
+
+    const handleDelete = (taskId) => {
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    };
+
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+
+    e.target.reset();
+    setIsOpen(false);
   };
 
   const TaskForm = () => {
     return (
       <div>
+        {" "}
         <form onSubmit={handleSubmit}>
+          {" "}
           <label>
-            Title
-            <input type="text" />
+            Title <input type="text" name="title" />{" "}
           </label>
           <label>
             Description
-            <textarea type="text" />
+            <textarea name="description" />
           </label>
           <label>
             Status
-            <options>
-              {boards.map((status, index) => (
-                <select key={index}>{status.title}</select>
+            <select name="status" defaultValue="to-do">
+              {boards.map((board) => (
+                <option key={board.id} value={board.status}>
+                  {board.title}
+                </option>
               ))}
-            </options>
+            </select>
           </label>
-          <button onClick={handleSubmit}>Submit</button>
+          <button type="submit">Submit</button>
         </form>
       </div>
     );
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div className="board">
-      {boards.map((board, index) => {
+      {boards.map((board) => {
+        const boardTasks = tasks.filter((task) => task.status === board.status);
         return (
-          <div className="kanban" key={index}>
+          <div className="kanban" key={board.id}>
             <div
               style={{
                 display: "flex",
@@ -60,19 +97,34 @@ function Board() {
               }}
             >
               <h2>{board.title}</h2>
+
               <button className="button" onClick={() => setIsOpen(true)}>
-                <ion-icon name="add-outline"></ion-icon> Add
+                <ion-icon name="add-outline"></ion-icon>
+                Add
               </button>
-            </div>
-            <div className="kanban-list">
-              {tasks.map((task, index) => {
-                return (
-                  <div className="task" key={index}>
-                    <h3>{task.titile}</h3>
-                    {task.description}
+
+              {boardTasks.map((task) => (
+                <div className="task" key={task.id}>
+                  <h3>{task.title}</h3>
+                  <p>{task.description}</p>
+
+                  <div className="task-actions">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingTask(task);
+                        setIsOpen(true);
+                      }}
+                    >
+                      Edit
+                    </button>
+
+                    <button type="button" onClick={() => handleDelete(task.id)}>
+                      Delete
+                    </button>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           </div>
         );

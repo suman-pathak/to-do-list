@@ -1,12 +1,14 @@
 const Modal = ({ children, isOpen, onClose, title = "Modal test" }) => {
-  if (isOpen != true) return;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div className="modal-overlay">
       <div className="modal">
         <div className="modal-title">
           <h3>{title}</h3>
-          <button className="button" onClick={() => onClose()}>
+          <button  type="button" className="button" onClick={onClose}>
             <ion-icon name="close-outline"></ion-icon>
           </button>
         </div>
